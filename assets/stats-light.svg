@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 176" width="800" height="176" role="img" aria-label="157 day contribution streak and top languages">
-  <title>157 day streak, longest 157, 2,457 contributions in the last 12 months</title>
+  <title>157 day streak, longest 157, 2,458 contributions in the last 12 months</title>
   <style>
     .label { font: 600 11px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: 2.5px; fill: #59636e; }
     .num { font: 800 76px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: -3px; }
@@ -44,7 +44,7 @@
   <use href="#num" class="red"/>
   <use href="#num" class="base"/>
   <text x="2" y="140" class="sub">days in a row</text>
-  <text x="2" y="164" class="note">longest 157 · 2,457 contributions in 12 months</text>
+  <text x="2" y="164" class="note">longest 157 · 2,458 contributions in 12 months</text>
 
   <line x1="405" y1="6" x2="405" y2="170" stroke="#d1d9e0"/>
 
