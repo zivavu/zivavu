@@ -1,4 +1,4 @@
-"""Builds assets/streak-{dark,light}.svg: the contribution streak card.
+"""Builds assets/stats-{dark,light}.svg: contribution streak and top languages.
 
 Runs daily in .github/workflows/stats.yml. Locally:
     GH_TOKEN=$(gh auth token) python scripts/build.py
@@ -7,9 +7,12 @@ Runs daily in .github/workflows/stats.yml. Locally:
 import json
 import os
 import urllib.request
+from collections import Counter
 from pathlib import Path
 
 USER = "zivavu"
+TOP_LANGUAGES = 6
+IGNORED_LANGUAGES = {"PLpgSQL"}  # Supabase migrations, they drown out everything else
 OUT = Path(__file__).resolve().parent.parent / "assets"
 TOKEN = os.environ.get("GH_TOKEN") or os.environ["GITHUB_TOKEN"]
 
@@ -19,6 +22,7 @@ THEMES = {
     "dark": {
         "fg": "#e6edf3",
         "muted": "#7d8590",
+        "line": "#30363d",
         "accent": "#3ddc97",
         "red": "#ff2d6f",
         "cyan": "#19d3f3",
@@ -27,6 +31,7 @@ THEMES = {
     "light": {
         "fg": "#1f2328",
         "muted": "#59636e",
+        "line": "#d1d9e0",
         "accent": "#1a7f37",
         "red": "#ff2d6f",
         "cyan": "#00b8d9",
@@ -35,17 +40,40 @@ THEMES = {
 }
 
 
-def graphql(query):
+# github/linguist colors for the languages likely to show up
+LANGUAGE_COLORS = {
+    "TypeScript": "#3178c6",
+    "JavaScript": "#f1e05a",
+    "Svelte": "#ff3e00",
+    "Python": "#3572a5",
+    "HTML": "#e34c26",
+    "CSS": "#663399",
+    "GLSL": "#5686a5",
+    "C++": "#f34b7d",
+    "Vue": "#41b883",
+    "Astro": "#ff5a03",
+}
+
+
+def api(path, body=None):
     request = urllib.request.Request(
-        "https://api.github.com/graphql",
-        data=json.dumps({"query": query}).encode(),
-        headers={"Authorization": f"Bearer {TOKEN}", "User-Agent": USER},
+        "https://api.github.com" + path,
+        data=json.dumps(body).encode() if body else None,
+        headers={
+            "Authorization": f"Bearer {TOKEN}",
+            "Accept": "application/vnd.github+json",
+            "User-Agent": USER,
+        },
     )
     with urllib.request.urlopen(request) as response:
         data = json.load(response)
-    if data.get("errors"):
+    if isinstance(data, dict) and data.get("errors"):
         raise RuntimeError(data["errors"])
-    return data["data"]["user"]
+    return data
+
+
+def graphql(query):
+    return api("/graphql", {"query": query})["data"]["user"]
 
 
 CALENDAR = "contributionCalendar { totalContributions weeks { contributionDays { date contributionCount } } }"
@@ -89,9 +117,42 @@ def contributions():
     return current, longest, recent["contributionCalendar"]["totalContributions"]
 
 
-def card(t, current, longest, total):
+def languages():
+    """Returns [(language, share of all bytes)] for the top languages across own repos."""
+    totals = Counter()
+    for repo in api(f"/users/{USER}/repos?per_page=100&type=owner"):
+        if repo["fork"] or repo["name"] == USER:
+            continue
+        totals.update(api(f"/repos/{repo['full_name']}/languages"))
+    for name in IGNORED_LANGUAGES:
+        totals.pop(name, None)
+    total = sum(totals.values())
+    return [(name, size / total) for name, size in totals.most_common(TOP_LANGUAGES)]
+
+
+def card(t, current, longest, total, langs):
     label = f"font: 600 11px {MONO}; letter-spacing: 2.5px; fill: {t['muted']};"
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 170" width="380" height="170" role="img" aria-label="{current} day contribution streak">
+
+    bar_x, bar_w = 430, 370
+    segments, x = [], bar_x
+    for name, share in langs:
+        w = max(share * bar_w, 3)
+        segments.append(
+            f'<rect x="{x:.1f}" y="40" width="{w:.1f}" height="10" fill="{LANGUAGE_COLORS.get(name, t["muted"])}"/>'
+        )
+        x += w + 2
+
+    legend = []
+    for i, (name, share) in enumerate(langs):
+        lx = bar_x + (i % 2) * 190
+        ly = 84 + (i // 2) * 30
+        legend.append(
+            f'<circle cx="{lx + 5}" cy="{ly - 4}" r="5" fill="{LANGUAGE_COLORS.get(name, t["muted"])}"/>'
+            f'<text x="{lx + 18}" y="{ly}" class="lang">{name}</text>'
+            f'<text x="{lx + 180}" y="{ly}" class="pct" text-anchor="end">{share * 100:.1f}%</text>'
+        )
+
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 176" width="800" height="176" role="img" aria-label="{current} day contribution streak and top languages">
   <title>{current} day streak, longest {longest}, {total:,} contributions in the last 12 months</title>
   <style>
     .label {{ {label} }}
@@ -99,6 +160,8 @@ def card(t, current, longest, total):
     .num {{ font: 800 76px {MONO}; letter-spacing: -3px; }}
     .sub {{ font: 500 14px {MONO}; fill: {t['fg']}; }}
     .note {{ font: 400 12px {MONO}; fill: {t['muted']}; }}
+    .lang {{ font: 500 13px {MONO}; fill: {t['fg']}; }}
+    .pct {{ font: 400 12px {MONO}; fill: {t['muted']}; }}
     .dot {{ fill: {t['accent']}; animation: blink 1.6s steps(1) infinite; }}
     @keyframes blink {{ 50% {{ opacity: 0.2; }} }}
 
@@ -130,6 +193,7 @@ def card(t, current, longest, total):
   </style>
   <defs>
     <text id="num" x="0" y="112" class="num">{current}</text>
+    <clipPath id="bar"><rect x="{bar_x}" y="40" width="{bar_w}" height="10" rx="5"/></clipPath>
   </defs>
 
   <text x="0" y="20" class="label">STREAK</text>
@@ -140,16 +204,24 @@ def card(t, current, longest, total):
   <use href="#num" class="base"/>
   <text x="2" y="140" class="sub">days in a row</text>
   <text x="2" y="164" class="note">longest {longest} · {total:,} contributions in 12 months</text>
+
+  <line x1="405" y1="6" x2="405" y2="170" stroke="{t['line']}"/>
+
+  <text x="{bar_x}" y="20" class="label">LANGUAGES</text>
+  <rect x="{bar_x}" y="40" width="{bar_w}" height="10" rx="5" fill="{t['line']}"/>
+  <g clip-path="url(#bar)">{"".join(segments)}</g>
+  {"".join(legend)}
 </svg>
 """
 
 
 def main():
     current, longest, total = contributions()
+    langs = languages()
     OUT.mkdir(exist_ok=True)
     for theme, t in THEMES.items():
-        (OUT / f"streak-{theme}.svg").write_text(card(t, current, longest, total), encoding="utf-8")
-    print(f"streak {current} (longest {longest}), {total} contributions")
+        (OUT / f"stats-{theme}.svg").write_text(card(t, current, longest, total, langs), encoding="utf-8")
+    print(f"streak {current} (longest {longest}), {total} contributions, languages {langs}")
 
 
 if __name__ == "__main__":
