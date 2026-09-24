@@ -23,7 +23,6 @@ THEMES = {
         "fg": "#e6edf3",
         "muted": "#7d8590",
         "line": "#30363d",
-        "accent": "#3ddc97",
         "red": "#ff2d6f",
         "cyan": "#19d3f3",
         "blend": "screen",
@@ -32,7 +31,6 @@ THEMES = {
         "fg": "#1f2328",
         "muted": "#59636e",
         "line": "#d1d9e0",
-        "accent": "#1a7f37",
         "red": "#ff2d6f",
         "cyan": "#00b8d9",
         "blend": "multiply",
@@ -156,14 +154,11 @@ def card(t, current, longest, total, langs):
   <title>{current} day streak, longest {longest}, {total:,} contributions in the last 12 months</title>
   <style>
     .label {{ {label} }}
-    .live {{ {label} fill: {t['accent']}; }}
     .num {{ font: 800 76px {MONO}; letter-spacing: -3px; }}
     .sub {{ font: 500 14px {MONO}; fill: {t['fg']}; }}
     .note {{ font: 400 12px {MONO}; fill: {t['muted']}; }}
     .lang {{ font: 500 13px {MONO}; fill: {t['fg']}; }}
     .pct {{ font: 400 12px {MONO}; fill: {t['muted']}; }}
-    .dot {{ fill: {t['accent']}; animation: blink 1.6s steps(1) infinite; }}
-    @keyframes blink {{ 50% {{ opacity: 0.2; }} }}
 
     /* RGB-split copies of the number that sit slightly apart and jump around every 7s */
     .cyan {{ fill: {t['cyan']}; mix-blend-mode: {t['blend']}; transform: translate(-2px, 0); animation: cyan 7s steps(1) infinite; }}
@@ -197,8 +192,6 @@ def card(t, current, longest, total, langs):
   </defs>
 
   <text x="0" y="20" class="label">STREAK</text>
-  <circle cx="312" cy="16" r="3.5" class="dot"/>
-  <text x="380" y="20" class="live" text-anchor="end">LIVE</text>
   <use href="#num" class="cyan"/>
   <use href="#num" class="red"/>
   <use href="#num" class="base"/>
@@ -220,7 +213,8 @@ def main():
     langs = languages()
     OUT.mkdir(exist_ok=True)
     for theme, t in THEMES.items():
-        (OUT / f"stats-{theme}.svg").write_text(card(t, current, longest, total, langs), encoding="utf-8")
+        svg = card(t, current, longest, total, langs)
+        (OUT / f"stats-{theme}.svg").write_text(svg, encoding="utf-8", newline="\n")  # same bytes on Windows and CI
     print(f"streak {current} (longest {longest}), {total} contributions, languages {langs}")
 
 

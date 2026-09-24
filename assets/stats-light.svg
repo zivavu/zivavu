@@ -2,14 +2,11 @@
   <title>157 day streak, longest 157, 2,457 contributions in the last 12 months</title>
   <style>
     .label { font: 600 11px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: 2.5px; fill: #59636e; }
-    .live { font: 600 11px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: 2.5px; fill: #59636e; fill: #1a7f37; }
     .num { font: 800 76px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: -3px; }
     .sub { font: 500 14px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; fill: #1f2328; }
     .note { font: 400 12px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; fill: #59636e; }
     .lang { font: 500 13px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; fill: #1f2328; }
     .pct { font: 400 12px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; fill: #59636e; }
-    .dot { fill: #1a7f37; animation: blink 1.6s steps(1) infinite; }
-    @keyframes blink { 50% { opacity: 0.2; } }
 
     /* RGB-split copies of the number that sit slightly apart and jump around every 7s */
     .cyan { fill: #00b8d9; mix-blend-mode: multiply; transform: translate(-2px, 0); animation: cyan 7s steps(1) infinite; }
@@ -43,8 +40,6 @@
   </defs>
 
   <text x="0" y="20" class="label">STREAK</text>
-  <circle cx="312" cy="16" r="3.5" class="dot"/>
-  <text x="380" y="20" class="live" text-anchor="end">LIVE</text>
   <use href="#num" class="cyan"/>
   <use href="#num" class="red"/>
   <use href="#num" class="base"/>
