@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 176" width="800" height="176" role="img" aria-label="157 day contribution streak and top languages">
-  <title>157 day streak, longest 157, 2,458 contributions in the last 12 months</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 176" width="800" height="176" role="img" aria-label="159 day contribution streak and top languages">
+  <title>159 day streak, longest 159, 2,485 contributions in the last 12 months</title>
   <style>
     .label { font: 600 11px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: 2.5px; fill: #7d8590; }
     .num { font: 800 76px ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace; letter-spacing: -3px; }
@@ -35,7 +35,7 @@
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
   <defs>
-    <text id="num" x="0" y="112" class="num">157</text>
+    <text id="num" x="0" y="112" class="num">159</text>
     <clipPath id="bar"><rect x="430" y="40" width="370" height="10" rx="5"/></clipPath>
   </defs>
 
@@ -44,12 +44,12 @@
   <use href="#num" class="red"/>
   <use href="#num" class="base"/>
   <text x="2" y="140" class="sub">days in a row</text>
-  <text x="2" y="164" class="note">longest 157 · 2,458 contributions in 12 months</text>
+  <text x="2" y="164" class="note">longest 159 · 2,485 contributions in 12 months</text>
 
   <line x1="405" y1="6" x2="405" y2="170" stroke="#30363d"/>
 
   <text x="430" y="20" class="label">LANGUAGES</text>
   <rect x="430" y="40" width="370" height="10" rx="5" fill="#30363d"/>
-  <g clip-path="url(#bar)"><rect x="430.0" y="40" width="272.9" height="10" fill="#3178c6"/><rect x="704.9" y="40" width="74.4" height="10" fill="#ff3e00"/><rect x="781.3" y="40" width="6.8" height="10" fill="#f1e05a"/><rect x="790.1" y="40" width="4.4" height="10" fill="#e34c26"/><rect x="796.5" y="40" width="3.3" height="10" fill="#3572a5"/><rect x="801.8" y="40" width="3.2" height="10" fill="#5686a5"/></g>
-  <circle cx="435" cy="80" r="5" fill="#3178c6"/><text x="448" y="84" class="lang">TypeScript</text><text x="610" y="84" class="pct" text-anchor="end">73.8%</text><circle cx="625" cy="80" r="5" fill="#ff3e00"/><text x="638" y="84" class="lang">Svelte</text><text x="800" y="84" class="pct" text-anchor="end">20.1%</text><circle cx="435" cy="110" r="5" fill="#f1e05a"/><text x="448" y="114" class="lang">JavaScript</text><text x="610" y="114" class="pct" text-anchor="end">1.8%</text><circle cx="625" cy="110" r="5" fill="#e34c26"/><text x="638" y="114" class="lang">HTML</text><text x="800" y="114" class="pct" text-anchor="end">1.2%</text><circle cx="435" cy="140" r="5" fill="#3572a5"/><text x="448" y="144" class="lang">Python</text><text x="610" y="144" class="pct" text-anchor="end">0.9%</text><circle cx="625" cy="140" r="5" fill="#5686a5"/><text x="638" y="144" class="lang">GLSL</text><text x="800" y="144" class="pct" text-anchor="end">0.9%</text>
+  <g clip-path="url(#bar)"><rect x="430.0" y="40" width="273.3" height="10" fill="#3178c6"/><rect x="705.3" y="40" width="74.4" height="10" fill="#ff3e00"/><rect x="781.6" y="40" width="6.7" height="10" fill="#f1e05a"/><rect x="790.4" y="40" width="4.3" height="10" fill="#e34c26"/><rect x="796.7" y="40" width="3.2" height="10" fill="#3572a5"/><rect x="801.9" y="40" width="3.2" height="10" fill="#5686a5"/></g>
+  <circle cx="435" cy="80" r="5" fill="#3178c6"/><text x="448" y="84" class="lang">TypeScript</text><text x="610" y="84" class="pct" text-anchor="end">73.9%</text><circle cx="625" cy="80" r="5" fill="#ff3e00"/><text x="638" y="84" class="lang">Svelte</text><text x="800" y="84" class="pct" text-anchor="end">20.1%</text><circle cx="435" cy="110" r="5" fill="#f1e05a"/><text x="448" y="114" class="lang">JavaScript</text><text x="610" y="114" class="pct" text-anchor="end">1.8%</text><circle cx="625" cy="110" r="5" fill="#e34c26"/><text x="638" y="114" class="lang">HTML</text><text x="800" y="114" class="pct" text-anchor="end">1.2%</text><circle cx="435" cy="140" r="5" fill="#3572a5"/><text x="448" y="144" class="lang">Python</text><text x="610" y="144" class="pct" text-anchor="end">0.9%</text><circle cx="625" cy="140" r="5" fill="#5686a5"/><text x="638" y="144" class="lang">GLSL</text><text x="800" y="144" class="pct" text-anchor="end">0.9%</text>
 </svg>
